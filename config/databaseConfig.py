@@ -9,8 +9,6 @@ class MySQLConfig:
     user: str
     password: str
 
-
-
 def getDatabaseConfig():
     load_dotenv()  
     config = {
