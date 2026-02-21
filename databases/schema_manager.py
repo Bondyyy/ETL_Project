@@ -47,3 +47,25 @@ def validate_mysql_schema(cursor):
     if repository is None:
         raise ValueError('Repository not found in repositories table')
     print('Repository found in repositories table')
+
+def create_mongodb_schema(mongo_db):
+    collection_name = 'users'
+    if collection_name in mongo_db.list_collection_names():
+        print(f"Collection '{collection_name}' already exists. Dropping it for a fresh start...")
+        # 2. Xóa collection cũ để tạo lại từ đầu (Fresh start)
+        mongo_db.drop_collection(collection_name)
+    mongo_db.create_collection('users', validator = {
+        "$jsonSchema": {
+            "bsonType": "object",
+            "required": ["user_id"],
+            "properties": {
+                "user_id": {"bsonType": "int"},
+                "login": {"bsonType": "string"},
+                "gravatar_id": {"bsonType": "string"},
+                "url": {"bsonType": "string"},
+                "avatar_url": {"bsonType": "string"}
+            }
+        }
+    })
+    print('Users collection created successfully in MongoDB database')
+    

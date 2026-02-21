@@ -1,6 +1,7 @@
 from databases.mySqlConnect import MySQLConnect
 from config.databaseConfig import getDatabaseConfig
-from databases.schema_manager import create_mysql_schema, validate_mysql_schema
+from databases.schema_manager import create_mysql_schema, validate_mysql_schema, create_mongodb_schema
+from databases.mongoDBConnect import MongoDBConnect
 
 def main(config):
     with MySQLConnect(config['mysql'].host, config['mysql'].port, 
@@ -12,6 +13,13 @@ def main(config):
         cursor.execute('INSERT INTO repositories (repo_id, name, url) VALUES (%s, %s, %s)', (1, 'demo', 'https://demo.com'))
         connection.commit()
         validate_mysql_schema(cursor)
+
+    with MongoDBConnect(config['mongodb'].uri, config['mongodb'].db_name) as mongo_client:
+        create_mongodb_schema(mongo_client)
+        mongo_client.db.users.insert_one(
+            {'user_id': 1, 'login': 'demo', 'gravatar_id': '', 'url': 'https://demo.com', 'avatar_url': 'https://demo.com/avatar.com'}
+        )
+        print("Data inserted into MongoDB database successfully")
 
 if __name__ == "__main__":
     config = getDatabaseConfig()
