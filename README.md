@@ -15,12 +15,3 @@ Dưới đây là sơ đồ mô tả luồng di chuyển của dữ liệu từ 
 * **Message Broker:** Apache Kafka (Điều phối dữ liệu giữa các dịch vụ).
 * **Processing Unit:** Apache Spark (Xử lý và biến đổi dữ liệu).
 * **Sink/Storage:** MongoDB (Lưu trữ dạng tài liệu) và Redis (Bộ nhớ đệm tốc độ cao).
-
-## 📁 Cấu trúc thư mục
-Dựa trên kiến trúc hiện tại, repo được tổ chức như sau:
-- `config/`: Chứa các thông số cấu hình kết nối database.
-- `data/`: Lưu trữ dữ liệu thô hoặc các tệp tin trung gian.
-- `databases/`: Các script định nghĩa schema và quản lý cơ sở dữ liệu.
-- `sql/`: Tập hợp các lệnh SQL và định nghĩa Trigger cho database nguồn.
-- `main.py`: Điểm khởi đầu của ứng dụng (Entry point).
-- `requirement.txt`: Danh sách các thư viện Python cần thiết.
