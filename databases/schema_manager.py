@@ -10,7 +10,7 @@ def create_mysql_schema(connection, cursor):
     connection.commit()
     print(f'Database {database} created successfully')
 
-    connection.database = database
+    connection.database = database # use the created database
 
     with open(SQL_FILE_PATH, 'r') as sql_file:
         sql_script = sql_file.read()
