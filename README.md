@@ -8,9 +8,7 @@ Dự án ứng dụng cơ chế **Database Triggers** kết hợp với các cô
 ## Kiến trúc hệ thống
 Dưới đây là sơ đồ mô tả luồng di chuyển của dữ liệu từ nguồn cấp đến các điểm lưu trữ cuối cùng:
 
-![Kiến trúc hệ thống ETL](https://googleusercontent.com/image_generation_content/0)
-
-*Lưu ý: Để ảnh hiển thị vĩnh viễn, bạn nên tải ảnh về, bỏ vào thư mục `images/` trong repo và thay link trên thành `images/ten_anh.png`.*
+![ETL](images/workflow.png)
 
 **Các thành phần chính:**
 * **Source:** MySQL (Capture các thay đổi thông qua Trigger).
