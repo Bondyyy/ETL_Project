@@ -13,15 +13,15 @@ class MongoDBConnect:
             self.client = MongoClient(self.mongo_uri)
             self.client.server_info() # check connection
             self.db = self.client[self.db_name]
-            print("Connected to MongoDB database")
+            print("--------------Connected to MongoDB database--------------")
             return self.db
         except ConnectionFailure as e:
-            raise Exception(f"Error connecting to MongoDB database: {e}") from e
+            raise Exception(f"----------Error connecting to MongoDB database: {e}-----------------") from e
 
     def close(self):
         if self.client:
             self.client.close()
-            print("Disconnected from MongoDB database")
+            print("--------------Disconnected from MongoDB database--------------")
     
     def __enter__(self):
         self.connect()

@@ -8,7 +8,7 @@ def create_mysql_schema(connection, cursor):
     cursor.execute(f"DROP DATABASE IF EXISTS {database}") 
     cursor.execute(f"CREATE DATABASE IF NOT EXISTS {database}")
     connection.commit()
-    print(f'Database {database} created successfully')
+    print(f'--------------Database {database} created successfully-----------------')
 
     connection.database = database # use the created database
 
@@ -19,7 +19,7 @@ def create_mysql_schema(connection, cursor):
             command = command.strip()
             if command:
                 cursor.execute(command)
-    print('Schema created successfully')
+    print('--------------Schema created successfully-----------------')
 
 def validate_mysql_schema(cursor):
     cursor.execute('SHOW TABLES')
@@ -28,7 +28,7 @@ def validate_mysql_schema(cursor):
     for table in listTable:
         if 'users' not in table[0] and 'repositories' not in table[0]:
             raise ValueError(f"Table {table} not found in database")
-    print('Schema validated successfully')
+    print('--------------Schema validated successfully-----------------')
     
     cursor.execute('''
                    SELECT * FROM users 
@@ -37,7 +37,7 @@ def validate_mysql_schema(cursor):
     user = cursor.fetchone()
     if user is None:
         raise ValueError('User not found in users table')
-    print('User found in users table')
+    print('------------user found in users table-----------------')
 
     cursor.execute('''
                    SELECT * FROM repositories 
@@ -45,14 +45,14 @@ def validate_mysql_schema(cursor):
                    ''')
     repository = cursor.fetchone()
     if repository is None:
-        raise ValueError('Repository not found in repositories table')
-    print('Repository found in repositories table')
-    print('validation in MySQL database successful')
+        raise ValueError('----------Repository not found in repositories table------------------')
+    print('----------------Repository found in repositories table------------------')
+    print('-----------------validation in MySQL database successful-------------------')
 
 def create_mongodb_schema(mongo_db):
     collection_name = 'users'
     if collection_name in mongo_db.list_collection_names():
-        print(f"Collection '{collection_name}' already exists. Dropping it")
+        print(f"--------Collection '{collection_name}' already exists. Dropping it-------------------")
         mongo_db.drop_collection(collection_name)
         
     mongo_db.create_collection('users', validator = {
@@ -68,14 +68,14 @@ def create_mongodb_schema(mongo_db):
             }
         }
     })
-    print('Users collection created successfully in MongoDB database')
+    print('--------------Users collection created successfully in MongoDB database--------------')
     
 def validate_mongodb_schema(mongo_db):
     collections = mongo_db.list_collection_names()
-    print(f"Collections in MongoDB database: {collections}")
+    print(f"--------------Collections in MongoDB database: {collections}-----------------")
     if 'users' not in mongo_db.list_collection_names():
         raise ValueError("collection 'users' not found in MongoDB database")
     users = mongo_db.users.find_one({'user_id': 1})
     if not users:
-        raise ValueError('User not found in users collection')
-    print('Validation in MongoDB database successful')
+        raise ValueError('----------User not found in users collection------------------')
+    print('--------------Validation in MongoDB database successful------------------')

@@ -10,7 +10,9 @@ os.environ['PYSPARK_PYTHON'] = sys.executable
 os.environ['PYSPARK_DRIVER_PYTHON'] = sys.executable
 
 def main():
-    jar_packages = ["mysql:mysql-connector-java:8.0.33"]
+    jar_packages = ["mysql:mysql-connector-java:8.0.33",
+                    "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1"]
+    
     spark_connect = SparkConnect(
         app_name='Spark ETL Pipeline',
         master='local[*]',
@@ -46,8 +48,10 @@ def main():
                                col("actor.avatar_url").alias("avatar_url"))
     
     spark_config = getSparkConfig()
-    df_write = SparkWriteDatabases(spark_connect.spark, spark_config['mysql'])
-    df_write.sparkWriteToMySQL(df_write_table, spark_config['mysql']['table'], spark_config['mysql']['jdbc_url'], spark_config['mysql']['config'], mode='append')
+    df_write = SparkWriteDatabases(spark_connect.spark, spark_config)
+    #df_write.sparkWriteToMySQL(df_write_table, spark_config['mysql']['table'], spark_config['mysql']['jdbc_url'], spark_config['mysql']['config'], mode='append')
+    #df_write.sparkWriteToMongoDB(df_write_table, 'users', spark_config['mongodb']['uri'], spark_config['mongodb']['db_name'], mode='append')
+    df_write.sparkWriteAllDatabases(df_write_table, mode='overwrite')
 
     
 

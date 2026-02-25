@@ -21,16 +21,16 @@ class MySQLConnect:
         try:   
             self.connection = mysql.connector.connect(**self.config )
             self.cursor = self.connection.cursor()
-            print("Connected to MySQL database")
+            print("------------Connected to MySQL database------------")
         except Error as e:
-            raise Exception(f"Error connecting to MySQL database: {e}") 
+            raise Exception(f"----------Error connecting to MySQL database: {e}-----------------") 
     
     def disconnect(self):
         if self.cursor:
             self.cursor.close()
         if self.connection:
             self.connection.close()
-            print("Disconnected from MySQL database")
+            print("--------------Disconnected from MySQL database--------------")
 
     def __enter__(self):
         self.connect()

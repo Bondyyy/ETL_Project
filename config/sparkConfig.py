@@ -50,13 +50,13 @@ class SparkConnect:
         spark = builder.getOrCreate()
 
         spark.sparkContext.setLogLevel(log_level)
-        print(f"Spark session created with app name '{self.app_name}' and master '{master}'")
+        print(f"------------- Spark session created with app name '{self.app_name}' and master '{master}'  -------------")
         return spark
 
 
     def stop(self):
         if self.spark:
             self.spark.stop()
-            print("Spark session stopped successfully")
+            print("-----------Spark session stopped successfully--------------")
                 
         

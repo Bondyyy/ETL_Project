@@ -15,6 +15,7 @@ class MySQLConfig:
 class MongoDBConfig:
     uri: str
     db_name: str
+    collection: str = 'users'
 
 def getDatabaseConfig():
     load_dotenv()  
@@ -28,7 +29,8 @@ def getDatabaseConfig():
         ),
         "mongodb": MongoDBConfig(
             uri=os.getenv("MONGODB_URI"),
-            db_name=os.getenv("MONGODB_DB_NAME")
+            db_name=os.getenv("MONGODB_DB_NAME"),
+            collection=os.getenv("MONGODB_COLLECTION")
         )
     } 
     return config
@@ -47,7 +49,11 @@ def getSparkConfig():
                 "database": db_config['mysql'].database
             }
         },
-        "mongodb":{},
+        "mongodb":{
+            "uri": db_config['mongodb'].uri,
+            "db_name": db_config['mongodb'].db_name,
+            "collection": db_config['mongodb'].collection
+        },
         "redis":{}
     }
     return spark_config
