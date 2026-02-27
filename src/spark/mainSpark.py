@@ -1,6 +1,6 @@
 from config.sparkConfig import SparkConnect
 from pyspark.sql.types import *
-from pyspark.sql.functions import col
+from pyspark.sql.functions import col, lit
 from src.spark.sparkWriteData import SparkWriteDatabases
 from config.databaseConfig import getSparkConfig
 
@@ -41,17 +41,21 @@ def main():
     ])
 
     df = spark_connect.spark.read.schema(schema).json('D:\\ProjectETL\\data\\2015-03-01-17.json')
-    df_write_table = df.select(col("actor.id").alias("user_id"), 
-                               col("actor.login").alias("login"),
-                               col("actor.gravatar_id").alias("gravatar_id"),
-                               col("actor.url").alias("url"),
-                               col("actor.avatar_url").alias("avatar_url"))
+    df_write_table = df.withColumn("spark_temp", lit("spark_write"))\
+        .select(col("actor.id").alias("user_id"), 
+                col("actor.login").alias("login"),
+                col("actor.gravatar_id").alias("gravatar_id"),
+                col("actor.url").alias("url"),
+                col("actor.avatar_url").alias("avatar_url"),
+                col("spark_temp").alias("spark_temp")
+                )
     
     spark_config = getSparkConfig()
     df_write = SparkWriteDatabases(spark_connect.spark, spark_config)
     #df_write.sparkWriteToMySQL(df_write_table, spark_config['mysql']['table'], spark_config['mysql']['jdbc_url'], spark_config['mysql']['config'], mode='append')
     #df_write.sparkWriteToMongoDB(df_write_table, 'users', spark_config['mongodb']['uri'], spark_config['mongodb']['db_name'], mode='append')
-    df_write.sparkWriteAllDatabases(df_write_table, mode='overwrite')
+    df_write.sparkWriteAllDatabases(df_write_table, mode='append')
+    df_write.validateMySQLWrite(spark_config['mysql']['jdbc_url'], spark_config['mysql']['config'], spark_config['mysql']['table'])
 
     
 
